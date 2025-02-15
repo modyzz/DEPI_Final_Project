@@ -11,9 +11,23 @@ pipeline{
 	    stage('gitclone') {
 
 			steps {
-				git 'https://github.com/shazforiot/nodeapp_test.git'
+				git 'https://github.com/Mostafa-Ahmed3/DEPI_Final_Project'
 			}
 		}
+		
+		stage('Buildmaven') {
+		    
+            steps {
+                echo '$USER_NAME'
+                sh './mvnw clean package'
+            }
+            
+        stage('Test') {
+            steps {
+                
+                echo 'Test the application...'
+                sh './mvnw test'
+            }
 
 		stage('Build') {
 
@@ -42,5 +56,4 @@ pipeline{
 			sh 'docker logout'
 		}
 	}
-
 }
