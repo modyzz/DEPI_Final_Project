@@ -8,15 +8,8 @@ pipeline{
 
 	stages {
 	    
-	    stage('gitclone') {
-
-			steps {
-				git 'https://github.com/Mostafa-Ahmed3/DEPI_Final_Project'
-			}
-		}
 		
-		stage('Buildmaven') {
-		    
+	stage('Buildmaven') {	    
             steps {
                 echo '$USER_NAME'
                 sh './mvnw clean package'
