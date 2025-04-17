@@ -1,52 +1,43 @@
-pipeline{
+pipeline {
 
-	agent any
+    agent any
 
-	environment {
-		DOCKERHUB_CREDENTIALS=credentials('mostafaahmed-dockerhub')
-	}
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('mostafaahmed-dockerhub')
+    }
 
-	stages {
-	    
-		
-	stage('Buildmaven') {	    
+    stages {
+
+        stage('Build Maven') {
             steps {
-                echo '$USER_NAME'
+                echo 'Building the application...'
                 sh './mvnw clean package'
             }
-            
+        }
+
         stage('Test') {
             steps {
-                
-                echo 'Test the application...'
+                echo 'Testing the application...'
                 sh './mvnw test'
             }
+        }
 
-		stage('Build') {
+        stage('Login to DockerHub') {
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+        }
 
-			steps {
-				sh 'docker build -t mostafaahmed500/dockerhub-project:latest .'
-			}
-		}
+        stage('Build & Push using Ansible') {
+            steps {
+                sh 'ansible-playbook ansible-playbook.yml'
+            }
+        }
+    }
 
-		stage('Login') {
-
-			steps {
-				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-			}
-		}
-
-		stage('Push') {
-
-			steps {
-				sh 'docker push mostafaahmed500/dockerhub-project:latest'
-			}
-		}
-	}
-
-	post {
-		always {
-			sh 'docker logout'
-		}
-	}
+    post {
+        always {
+            sh 'docker logout'
+        }
+    }
 }
