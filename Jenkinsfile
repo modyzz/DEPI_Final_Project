@@ -11,6 +11,7 @@ pipeline {
         stage('Build Maven') {
             steps {
                 echo 'Building the application...'
+                sh 'chmod +x mvnw'
                 sh './mvnw clean package'
             }
         }
@@ -18,6 +19,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing the application...'
+                sh 'chmod +x mvnw'
                 sh './mvnw test'
             }
         }
