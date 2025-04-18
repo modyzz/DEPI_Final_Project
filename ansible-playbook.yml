@@ -55,4 +55,4 @@
         command: docker run -d --name=node-exporter -p 9100:9100 prom/node-exporter
 
       - name: run grafana
-        command: docker run -d --name=grafana -p 3000:3000 -v ./grafana:/var/lib/grafana grafana/grafana
+        command: docker run -d --name=grafana -p 3000:3000 grafana/grafana
