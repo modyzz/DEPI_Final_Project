@@ -29,7 +29,7 @@ pipeline {
             }
         }
 
-        stage('Build & Push using Ansible') {
+        stage('Build & Push using Ansible & Run prometheus, grafana and node-exporter') {
             steps {
                 sh 'ansible-playbook ansible-playbook.yml'
             }
