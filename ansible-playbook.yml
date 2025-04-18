@@ -57,7 +57,7 @@
         
       - name: Ensure Grafana data directory exists
         file:
-          path: "grafana"  # Define this variable (e.g., './grafana')
+          path: "grafana"
           state: directory
 
       - name: Set Grafana data directory permissions recursively
