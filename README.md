@@ -1,45 +1,123 @@
-### Final Java DevOps CI/CD project.
+# DEPI Final Project
 
-## Description 
+A complete DevOps CI/CD pipeline for a Java web application. This project automates the entire software delivery lifecycle—from building and testing to containerization, deployment, and monitoring.
 
-This is a simple Java web app that needs to have an automated CI/CD using the DevOps toolset. The Application shall be running as a container on the same VM on port 8080. Test the application by visiting this URL http://localhost:8080/jpetstore.
+---
 
-## The used tools
+## 📄 Project Overview
 
-- Git/Github -> clone the code.
-- Maven -> build the code.
-- Docker -> dockerize the app
-- Jenkins -> CI/CD
-- Ansible -> deploy by running a container of the app
-- Terraform (Plus) -> to create the EC2 on AWS 
-- AWS (plus) -> EC2 machine that shall run the pipeline and host the application
+- **Application**: Java-based web application (JPetStore).
+- **Deployment**: Dockerized and deployed on a virtual machine using Ansible.
+- **Access URL**: [http://localhost:8080/jpetstore](http://localhost:8080/jpetstore)
 
-## The requirements
+---
 
-1- CI/CD pipeline that do as following 
+## 📊 Tech Stack
 
-CI:
-- Clone the source code.
-- Build the code using mvnw (already in the repo)
-- Test the code using mvnw (already in the repo)
-- Dockerize the application and push it to dockerhub
+| Purpose                     | Tool/Technology        |
+|----------------------------|------------------------|
+| Version Control            | Git & GitHub           |
+| Build Tool                 | Maven (via `mvnw`)     |
+| Containerization           | Docker                 |
+| CI/CD                      | Jenkins                |
+| Configuration Management   | Ansible                |
+| Monitoring                 | Prometheus, Grafana, Node Exporter |
 
-CD:
-- Deploy the application by running a container from the image using Ansible.
-- Apply the monitoring on the machine using Prometheus. 
+---
 
-2- Create the EC2 instance using terraform instead of using the local VM (Plus)
+## ✅ CI/CD Pipeline
 
-## The expected delevirable
+### Continuous Integration (CI)
 
-Github repo containes 
-- The src code.
-- The Dockerfile
-- The Jenkinsfile
-- The Ansible Playbook
+1. **Checkout Code**: Jenkins pulls the latest code from GitHub.
+2. **Build Project**: Uses Maven Wrapper (`mvnw`) to build the application:
+   ```sh
+   chmod +x mvnw
+   ./mvnw clean package
+   ```
+3. **Run Tests**: Executes unit and integration tests:
+   ```sh
+   ./mvnw test
+   ```
+4. **Run Ansible Playbook**: Jenkins triggers `ansible-playbook.yml` to:
+   - Build the Docker image
+   - Push the Docker image to Docker Hub
+  
+     
+### Continuous Deployment (CD)
 
-## Note 
+1. **Run Ansible Playbook**: Jenkins triggers `ansible-playbook.yml` to:
+   - Deploy the application container
+   - Start Prometheus
+   - Start Node Exporter
+   - Start Grafana and provision dashboards
 
-This application build is resulting a .war file not .jar as we saw before. This needs a change in the command that is used to run the application. We will use mvnw as well to run the application as shown below. Here's the command used to run the app:
+---
 
-./mvnw cargo:run -P tomcat90
+## ⚡ Getting Started
+
+### Prerequisites
+
+- [Docker](https://www.docker.com/get-started)
+- [Jenkins](https://www.jenkins.io/doc/book/installing/)
+- [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+- [Prometheus](https://prometheus.io/docs/introduction/overview/)
+- [Grafana](https://grafana.com/grafana/download)
+- [Node Exporter](https://prometheus.io/docs/guides/node-exporter/)
+
+### Installation Steps (Using Jenkins)
+
+1. **Set Up Jenkins Job**:
+   - Configure a Jenkins Pipeline job.
+   - Use the provided `Jenkinsfile` from the repository.
+
+2. **Connect Jenkins to GitHub**:
+   - Set GitHub repository URL in Jenkins job configuration.
+   - Enable GitHub webhook (optional for auto-trigger).
+
+3. **Run the Job**:
+   - Jenkins will:
+     - Build the application with Maven
+     - Run tests
+     - Trigger the Ansible playbook for build, push Docker image, deployment and monitoring setup
+
+4. **Access the App**:
+   Open [http://localhost:8080/jpetstore](http://localhost:8080/jpetstore)
+
+---
+
+## 📚 Repository Structure
+
+```
+DEPI_Final_Project/
+├── .mvn/                     # Maven Wrapper files
+├── src/                      # Application source code
+├── Dockerfile                # Docker build instructions
+├── Jenkinsfile               # CI/CD pipeline config
+├── ansible-playbook.yml      # Ansible deployment script (deploy, monitor)
+├── prometheus.yml            # Prometheus configuration
+├── grafana/                  # Grafana provisioning & dashboards (optional)
+├── LICENSE                   # License info (Apache 2.0)
+└── NOTICE                    # Legal notices and attributions
+```
+
+---
+
+## ☑ Notes
+
+- The application builds a `.war` file (not `.jar`). Ensure your deployment method supports it.
+- Jenkins pipeline uses `mvnw` to eliminate Maven installation requirements.
+- Prometheus is configured to scrape metrics from Node Exporter and your application.
+- Grafana is used to visualize collected metrics via dashboards.
+- Ansible handles deploying the Docker image and starting all monitoring tools.
+
+---
+
+## 📚 License
+
+This project is licensed under the [Apache 2.0 License](LICENSE).
+
+---
+
+Feel free to fork or contribute — PRs are welcome!
+
