@@ -18,7 +18,8 @@ FROM openjdk:21
 
 WORKDIR /usr/src/myapp
 
-COPY . .
+COPY renovate.json pom.xml mvnw mvnw.cmd format.xml /.mvnw .
+COPY ./target .
 
 EXPOSE 8080
 
