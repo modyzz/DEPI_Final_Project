@@ -8,7 +8,7 @@ A complete DevOps CI/CD pipeline for a Java web application. This project automa
 
 - **Application**: Java-based web application (JPetStore).
 - **Deployment**: Dockerized and deployed on a virtual machine using Ansible.
-- **Access URL**: [http://localhost:8080/jpetstore](http://localhost:8080/jpetstore)
+- **Access URL**: [http://localhost:8080/jpetstore](http://localhost:8089/jpetstore)
 
 ---
 
